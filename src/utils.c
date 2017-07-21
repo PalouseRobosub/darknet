@@ -10,6 +10,14 @@
 
 #include "utils.h"
 
+int check_extension (const char* filename, const char* desired_extension)
+{
+    const char* dot = strrchr(filename, '.');
+    if(!dot || dot == filename) return 0;
+
+    return strcmp(dot+1, desired_extension) == 0;
+}
+
 double what_time_is_it_now()
 {
     struct timespec now;
@@ -241,7 +249,7 @@ list *split_str(char *s, char delim)
 {
     size_t i;
     size_t len = strlen(s);
-    list *l = make_list();
+    list *l =make_list();
     list_insert(l, s);
     for(i = 0; i < len; ++i){
         if(s[i] == delim){

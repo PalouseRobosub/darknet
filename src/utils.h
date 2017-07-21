@@ -7,6 +7,8 @@
 
 #define TWO_PI 6.2831853071795864769252866
 
+int check_extension (const char* filename, const char* desired_extension);
+
 double what_time_is_it_now();
 void shuffle(void *arr, size_t n, size_t size);
 void sorta_shuffle(void *arr, size_t n, size_t size, size_t sections);

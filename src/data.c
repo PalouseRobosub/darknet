@@ -7,7 +7,51 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <dirent.h>
+#include <unistd.h>
+
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+
+// this function will create leakable memory
+// TODO clean up at use time
+list *get_weight_files(char* dirpath)
+{
+    list *weight_files = make_list();
+    DIR *dir;
+    struct dirent *ent;
+    char full_filepath[1024];
+
+    if ((dir = opendir(dirpath)) != NULL)
+    {
+        while ((ent = readdir(dir)) != NULL)
+        {
+            // check that this is actually a wieghts file
+            if (check_extension(ent->d_name, "weights"))
+            {
+                full_filepath[0] = '\0';
+                strcat(full_filepath, dirpath);
+                strcat(full_filepath, "/");
+                strcat(full_filepath, ent->d_name);
+
+                char* copied_filepath = (char*)malloc(strlen(full_filepath));
+                strcpy(copied_filepath, full_filepath);
+
+                list_insert(weight_files, copied_filepath);
+            }
+        }
+        closedir(dir);
+    }
+    else
+    {
+        // could not open directory
+        perror("could not open weights directory!");
+        return NULL;
+    }
+
+    return weight_files;
+}
+
 
 list *get_paths(char *filename)
 {

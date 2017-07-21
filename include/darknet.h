@@ -709,6 +709,7 @@ image get_image_from_stream(CvCapture *cap);
 void free_image(image m);
 float train_network(network net, data d);
 pthread_t load_data_in_thread(load_args args);
+list *get_weight_files(char* dir);
 list *get_paths(char *filename);
 void hierarchy_predictions(float *predictions, int n, tree *hier, int only_leaves, int stride);
 void change_leaves(tree *t, char *leaf_list);
